@@ -21,7 +21,7 @@ function BurgerIngredient(props) {
         case ('meat'):
             ingredient = <Meat />
             break;
-        case ('Bacon'):
+        case ('bacon'):
             ingredient = <Bacon />
             break;
         case ('cheese'):

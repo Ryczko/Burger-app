@@ -9,13 +9,17 @@ function Burger({ ingredients }) {
             [...Array(ingredients[el])].map((_, i) => (
                 <BurgerIngredient key={el + i} type={el} />
             ))
-        ))
+        )).reduce((prev, current) => {
+            return prev.concat(current)
+        }, [])
 
 
     return (
-        <BurgerStyle>
+
+        < BurgerStyle >
+
             <BurgerIngredient type='bread-top' />
-            {transformedIngredients}
+            {transformedIngredients.length === 0 ? <p>Please, start adding ingredients!</p> : transformedIngredients}
             <BurgerIngredient type='bread-bottom' />
         </BurgerStyle >
     );
