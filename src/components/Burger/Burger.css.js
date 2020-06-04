@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import breakPoints from 'utilis/breakpoints'
 
 export const BurgerStyle = styled.div`
-  width:100%;
+  width:90%;
   margin:auto;
   height:250px;
   text-align:center;

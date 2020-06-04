@@ -25,6 +25,7 @@ function BurgerBuilder(props) {
     const [purchasable, setPurchasable] = useState(false);
 
 
+
     const addIngredientHandler = (type) => {
 
         const newIngredients = {
@@ -46,6 +47,9 @@ function BurgerBuilder(props) {
         setIngredients(newIngredients);
         setTotalPrice(totalPrice - INGREDIENT_PRICES[type])
     }
+
+
+
     const disabledInfo = {
         ...ingredients
     };
@@ -63,6 +67,7 @@ function BurgerBuilder(props) {
 
     return (
         <>
+
             <Burger ingredients={ingredients} />
             <BuildControls
                 ingredientAdded={addIngredientHandler}
@@ -70,6 +75,7 @@ function BurgerBuilder(props) {
                 disabled={disabledInfo}
                 purchasable={purchasable}
                 price={totalPrice}
+                ingredients={ingredients}
             />
 
         </>

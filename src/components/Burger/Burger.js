@@ -19,7 +19,7 @@ function Burger({ ingredients }) {
         < BurgerStyle >
 
             <BurgerIngredient type='bread-top' />
-            {transformedIngredients.length === 0 ? <p>Please, start adding ingredients!</p> : transformedIngredients}
+            {transformedIngredients.length === 0 ? <p style={{ padding: '20px' }}>Please, start adding ingredients!</p> : transformedIngredients}
             <BurgerIngredient type='bread-bottom' />
         </BurgerStyle >
     );
