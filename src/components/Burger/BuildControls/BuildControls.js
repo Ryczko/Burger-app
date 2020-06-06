@@ -4,8 +4,15 @@ import BuildControl from './BuildControl/BuildControl'
 
 import Modal from 'components/UI/Modal/Modal';
 import OrderSummary from 'components/Burger/OrderSummary/OrderSummary'
+import axios from 'axios-orders'
 
+import PacmanLoader from "react-spinners/PacmanLoader";
+import { css } from "@emotion/core";
+import withErrorHandler from 'hoc/withErrorHandler'
 
+const override = css`
+  left:40%;
+`;
 
 
 const controls = [
@@ -19,12 +26,35 @@ const controls = [
 function BurgerControls(props) {
 
     const [purchasing, setPurchasing] = useState(false)
+    const [loading, setLoading] = useState(false)
 
-    const handleCancellPurchase = () => {
-        setPurchasing(!purchasing)
+
+    const handleCloseModal = () => {
+        setPurchasing(false);
     }
-    const handleContinuePurchase = () => {
-        alert('ypu continue')
+
+    const handleContinuePurchase = async () => {
+        setLoading(true);
+        const order = {
+            ingredients: props.ingredients,
+            price: props.price,
+            customer: {
+                name: "Konrad",
+                adress: {
+                    steet: 'x',
+                    ziCode: '11111',
+                    country: 'Poland'
+                },
+                email: 'abc@x.com'
+            },
+            delieveryMethod: 'fastest'
+        }
+
+        await axios.post('/orders', order)
+
+        setPurchasing(false)
+        setLoading(false)
+
     }
 
 
@@ -42,20 +72,25 @@ function BurgerControls(props) {
 
             ))}
 
-            <OrderButton disabled={!props.purchasable} onClick={handleCancellPurchase}>Order</OrderButton>
+            <OrderButton disabled={!props.purchasable} onClick={() => setPurchasing(true)}>Order</OrderButton>
 
-            <Modal active={purchasing} closeModal={handleCancellPurchase}>
-                <OrderSummary
-                    ingredients={props.ingredients}
-                    continue={handleContinuePurchase}
-                    cancel={handleCancellPurchase}
-                    price={props.price.toFixed(2)}
+            <Modal active={purchasing} loading={loading} closeModal={handleCloseModal}>
+                {loading ?
+                    <PacmanLoader
+                        css={override}
+                        color="green" /> :
+                    (<OrderSummary
+                        ingredients={props.ingredients}
+                        continue={handleContinuePurchase}
+                        cancel={handleCloseModal}
+                        price={props.price.toFixed(2)}
+                    />)
+                }
 
-                />
             </Modal>
 
-        </BuildPanel>
+        </BuildPanel >
     );
 }
 
-export default BurgerControls;
+export default withErrorHandler(BurgerControls, axios);

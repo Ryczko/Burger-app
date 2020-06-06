@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '../../UI/Button/Button'
 
+
 function OrderSummary(props) {
     const ingredientSummary = Object.keys(props.ingredients).map(el => (
         <li key={el}>{el}: {props.ingredients[el]}</li>

@@ -8,7 +8,7 @@ function Modal(props) {
     return ReactDOM.createPortal(
         <>
             <Backdrop active={props.active} onClick={props.closeModal} />
-            <ModalStyled active={props.active}>
+            <ModalStyled active={Boolean(props.active)}>
                 {props.children}
             </ModalStyled>
         </>,
@@ -17,5 +17,5 @@ function Modal(props) {
 }
 
 export default React.memo(Modal, (prev, next) =>
-    next.active === prev.active
+    next.active === prev.active && next.loading === prev.loading
 );

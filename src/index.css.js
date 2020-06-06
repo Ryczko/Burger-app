@@ -9,6 +9,10 @@ ${normalize}
     margin:0;
     box-sizing:border-box;
 }
+html{
+    min-height:100vh;
+    position:relative;
+}
  a{
      text-decoration:none
  }
