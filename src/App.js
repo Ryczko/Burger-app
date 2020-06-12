@@ -4,17 +4,25 @@ import BurgerBuilder from 'containers/BurgerBuilder/BurgerBuilder'
 import { ThemeProvider } from 'styled-components'
 import GlobalStyles from 'index.css';
 import "./fontello/css/fontello.css";
-
+import Checkout from 'containers/Checkout/Checkout'
 import theme from 'utilis/theme'
+import { BrowserRouter, Route } from 'react-router-dom'
+import Orders from 'containers/Orders/Orders'
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
 
-      <GlobalStyles />
-      <Layout>
-        <BurgerBuilder />
-      </Layout>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <GlobalStyles />
+        <Layout>
+
+          <Route path="/" exact component={BurgerBuilder} />
+          <Route path="/checkout" component={Checkout} />
+          <Route path="/orders" component={Orders} />
+
+        </Layout>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }
