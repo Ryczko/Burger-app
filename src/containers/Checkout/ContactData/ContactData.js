@@ -4,45 +4,172 @@ import { ContactDataStyle } from './ContactData.css'
 import PacmanLoader from "react-spinners/PacmanLoader";
 import axios from 'axios-orders'
 import { css } from "@emotion/core";
+import Input from 'components/UI/Input/Input'
 const override = css`
 transform:translateX(-50px);
   margin:50px auto;
 `;
 
 function ContactData(props) {
+    const [loading, setLoading] = useState(false);
+    const [formValidate, setformValidate] = useState(false);
+    const [orderForm, setOrderForm] = useState({
+        name: {
+            elementType: 'input',
+            elementConfig: {
+                type: 'text',
+                placeholder: 'Your Name'
+            },
+            value: '',
+            validate: true,
+            isTouched: false,
+            validation: {
+                required: true,
+                minLength: 3
+            }
+        },
+        street: {
+            elementType: 'input',
+            elementConfig: {
+                type: 'text',
+                placeholder: 'street'
+            },
+            value: '',
+            validate: true,
+            isTouched: false,
+            validation: {
+                required: true,
 
-    const [name, setName] = useState('');
-    const [loading, setLoading] = useState(false)
-    const [purchasing, setPurchasing] = useState(false)
-    const [email, setEmail] = useState('')
-    const [adress, setAdress] = useState({
-        street: '',
-        postalCode: ''
+            }
+        },
+        zipCode: {
+            elementType: 'input',
+            elementConfig: {
+                type: 'text',
+                placeholder: 'zip code'
+            },
+            value: '',
+            validate: true,
+            isTouched: false,
+            validation: {
+                required: true,
+                minLength: 5,
+                maxLength: 5
+            }
+        },
+        country: {
+            elementType: 'input',
+
+            elementConfig: {
+                type: 'text',
+                placeholder: 'country'
+            },
+            value: '',
+            validate: true,
+            isTouched: false,
+            validation: {
+                required: true,
+
+            }
+        },
+        email: {
+            elementType: 'input',
+            elementConfig: {
+                type: 'text',
+                placeholder: 'email'
+            },
+            value: '',
+            validate: true,
+            isTouched: false,
+            validation: {
+                required: true,
+
+            }
+        },
+        delieveryMethod: {
+            elementType: 'select',
+            elementConfig: {
+
+                options: [
+                    { value: 'fastest', displayValue: 'Fastest' },
+                    { value: 'cheapest', displayValue: 'cheapest' }
+                ]
+            },
+            value: '',
+            validate: true,
+            isTouched: true,
+        }
+
+
     })
 
+    const checkValidity = (value, rules) => {
+        if (!rules) return true;
+        let isValid = true;
+        if (rules.required && value.trim() === '') isValid = false;
+        if (rules.minLength && value.length < rules.minLength) isValid = false;
+        if (rules.maxLength && value.length > rules.maxLength) isValid = false;
+
+
+
+        return isValid;
+    }
     const handleOrder = async (e) => {
         e.preventDefault();
         setLoading(true);
+        const formData = {};
+
+        for (let key in orderForm) {
+            formData[key] = orderForm[key].value
+        }
         const order = {
             ingredients: props.ingredients,
             price: props.price,
-            customer: {
-                name: "Konrad",
-                adress: {
-                    steet: 'x',
-                    ziCode: '11111',
-                    country: 'Poland'
-                },
-                email: 'abc@x.com'
-            },
-            delieveryMethod: 'fastest'
+            orderData: formData
         }
 
         await axios.post('/orders.json', order)
 
-        setPurchasing(false)
         setLoading(false)
         props.history.push('/')
+    }
+
+
+    const formElementsArray = [];
+    for (let key in orderForm) {
+        formElementsArray.push({
+            id: key,
+            config: orderForm[key],
+
+        })
+
+    }
+
+
+
+    const inputChangedHandler = (event, inputId) => {
+
+        const updatedOrderForm = {
+            ...orderForm
+        }
+        const updatedFormElement = { ...updatedOrderForm[inputId] };
+        updatedFormElement.value = event.target.value;
+        if (!updatedFormElement.isTouched) updatedFormElement.isTouched = true;
+        updatedFormElement.validate = checkValidity(updatedFormElement.value, updatedFormElement.validation)
+        updatedOrderForm[inputId] = updatedFormElement;
+
+
+        setOrderForm(updatedOrderForm)
+
+        let isFormValidate = true;
+        for (let key in updatedOrderForm) {
+            if (!(updatedOrderForm[key].isTouched && updatedOrderForm[key].validate)) {
+                isFormValidate = false;
+                break;
+            }
+        }
+
+        setformValidate(isFormValidate)
     }
 
     return (
@@ -50,12 +177,18 @@ function ContactData(props) {
             <h3>Enter your contact data</h3>
             {loading ?
                 <PacmanLoader css={override} />
-                : (<form>
-                    <input type="text" name="name" placeholder="your name" />
-                    <input type="text" name="email" placeholder="your email" />
-                    <input type="text" name="street" placeholder="street" />
-                    <input type="text" name="postal" placeholder="postal" />
-                    <Button success clicked={handleOrder}>Order</Button>
+                : (<form onSubmit={handleOrder}>
+
+                    {formElementsArray.map(el => <Input
+                        key={el.id}
+                        elementType={el.config.elementType}
+                        elementConfig={el.config.elementConfig}
+                        value={el.config.value}
+                        validate={el.config.validate}
+                        changed={(event) => inputChangedHandler(event, el.id)}
+                    />)}
+
+                    <Button success disabled={!formValidate}>Order</Button>
                 </form>)}
 
         </ContactDataStyle>

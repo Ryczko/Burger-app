@@ -13,7 +13,7 @@ function App() {
   return (
 
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
+      <BrowserRouter basename='/Burger-app'>
         <GlobalStyles />
         <Layout>
 
