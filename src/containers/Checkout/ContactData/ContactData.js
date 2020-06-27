@@ -4,7 +4,9 @@ import { ContactDataStyle } from './ContactData.css'
 import PacmanLoader from "react-spinners/PacmanLoader";
 import axios from 'axios-orders'
 import { css } from "@emotion/core";
-import Input from 'components/UI/Input/Input'
+import Input from 'components/UI/Input/Input';
+import { connect } from 'react-redux'
+
 const override = css`
 transform:translateX(-50px);
   margin:50px auto;
@@ -54,7 +56,7 @@ function ContactData(props) {
             validation: {
                 required: true,
                 minLength: 5,
-                maxLength: 5
+                maxLength: 6
             }
         },
         country: {
@@ -95,7 +97,7 @@ function ContactData(props) {
                     { value: 'cheapest', displayValue: 'cheapest' }
                 ]
             },
-            value: '',
+            value: 'fastest',
             validate: true,
             isTouched: true,
         }
@@ -124,7 +126,7 @@ function ContactData(props) {
         }
         const order = {
             ingredients: props.ingredients,
-            price: props.price,
+            price: props.totalPrice.toFixed(2),
             orderData: formData
         }
 
@@ -195,4 +197,11 @@ function ContactData(props) {
     );
 }
 
-export default ContactData;
+const mapStateToProps = state => {
+    return {
+        ingredients: state.ingredients,
+        totalPrice: state.totalPrice
+    }
+}
+
+export default connect(mapStateToProps)(ContactData);

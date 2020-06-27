@@ -5,14 +5,14 @@ function Input(props) {
 
     switch (props.elementType) {
         case ('input'):
-            inputElement = <input {...props.elementConfig} value={props.element} onChange={props.changed} />
+            inputElement = <input {...props.elementConfig} value={props.value} onChange={props.changed} />
 
             break;
         case ('textarea'):
-            inputElement = <textarea {...props.elementConfig} value={props.element} onChange={props.changed} />
+            inputElement = <textarea {...props.elementConfig} value={props.value} onChange={props.changed} />
             break;
         case ('select'):
-            inputElement = <select value={props.element} onChange={props.changed}>
+            inputElement = <select value={props.value} onChange={props.changed}>
                 {props.elementConfig.options.map(option => (
                     <option value={option.value} key={option.value}>{option.displayValue}</option>
                 ))}

@@ -15,6 +15,8 @@ input{
     border: 1px solid gray;
     background-color:${props => props.validate ? 'white' : 'red'};
     transition:.3s;
+    padding: 5px;
+    font-size:1.4rem;
     
 
     &:focus{
