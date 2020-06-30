@@ -3,10 +3,18 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import reducer from './store/reducer';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import burgerBuilderReducer from './store/reducers/burderBuilder';
+import orderReducer from './store/reducers/order';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import thunk from 'redux-thunk'
 
-const store = createStore(reducer);
+const rootReducer = {
+  burgerBuilder: burgerBuilderReducer,
+  order: orderReducer
+}
+
+const store = createStore(combineReducers(rootReducer), composeWithDevTools(applyMiddleware(thunk)));
 
 ReactDOM.render(
   <Provider store={store}>

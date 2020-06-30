@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import Button from 'components/UI/Button/Button'
 import { ContactDataStyle } from './ContactData.css'
 import PacmanLoader from "react-spinners/PacmanLoader";
-import axios from 'axios-orders'
+
 import { css } from "@emotion/core";
 import Input from 'components/UI/Input/Input';
 import { connect } from 'react-redux'
 
+import * as contactDataActions from 'store/actions'
 const override = css`
 transform:translateX(-50px);
   margin:50px auto;
@@ -116,7 +117,7 @@ function ContactData(props) {
 
         return isValid;
     }
-    const handleOrder = async (e) => {
+    const handleOrder = (e) => {
         e.preventDefault();
         setLoading(true);
         const formData = {};
@@ -130,10 +131,10 @@ function ContactData(props) {
             orderData: formData
         }
 
-        await axios.post('/orders.json', order)
 
-        setLoading(false)
-        props.history.push('/')
+        props.onPurchase(order);
+
+
     }
 
 
@@ -199,9 +200,15 @@ function ContactData(props) {
 
 const mapStateToProps = state => {
     return {
-        ingredients: state.ingredients,
-        totalPrice: state.totalPrice
+        ingredients: state.burgerBuilder.ingredients,
+        totalPrice: state.burgerBuilder.totalPrice
     }
 }
 
-export default connect(mapStateToProps)(ContactData);
+const mapDispatchToProps = dispatch => {
+    return {
+        onPurchase: (orderData) => dispatch(contactDataActions.sendPurchase(orderData))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactData);

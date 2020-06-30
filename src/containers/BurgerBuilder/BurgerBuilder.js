@@ -8,7 +8,7 @@ import Modal from 'components/UI/Modal/Modal';
 import OrderSummary from 'components/Burger/OrderSummary/OrderSummary'
 import { connect } from 'react-redux'
 import withErrorHandler from 'hoc/withErrorHandler'
-import * as actions from 'store/actions'
+import * as burgerBuilderActions from '../../store/actions'
 
 
 const center = css`
@@ -25,9 +25,6 @@ const override = css`
 
 function BurgerBuilder(props) {
 
-    // const [ingredients, setIngredients] = useState(null)
-    //const [totalPrice, setTotalPrice] = useState(4);
-    const [error, setError] = useState(false);
     const [purchasing, setPurchasing] = useState(false)
     const [loading, setLoading] = useState(false)
 
@@ -52,42 +49,15 @@ function BurgerBuilder(props) {
     }
 
 
-    // useEffect(() => {
-    //     axios.get('https://burger-app-2350a.firebaseio.com/ingredients.json')
-    //         .then(res => {
-
-    //             setIngredients(res.data)
-    //         })
-    //         .catch(err => { setError(true) })
-    // }, [])
-
-    // const addIngredientHandler = (type) => {
-
-    //     // const newIngredients = {
-    //     //     ...ingredients
-    //     // }
-    //     // newIngredients[type] = ingredients[type] + 1;
-
-    //     // setIngredients(newIngredients);
+    useEffect(() => {
+        props.onInitIngredients(props.ingredients);
+        if (props.purchased) {
+            props.resetIngredients()
+            props.onChangePurchased();
 
 
-
-
-    //     props.onIngredientAdded(type)
-    //     setTotalPrice(totalPrice + INGREDIENT_PRICES[type])
-    // }
-
-    // const removeIngredientHandler = (type) => {
-    //     // if (ingredients[type] <= 0) return;
-    //     // const newIngredients = {
-    //     //     ...ingredients
-    //     // }
-    //     // newIngredients[type] = ingredients[type] - 1;
-
-    //     // setIngredients(newIngredients);
-    //     props.onIngredientRemoved(type)
-    //     setTotalPrice(totalPrice - INGREDIENT_PRICES[type])
-    // }
+        }
+    }, [])
 
 
 
@@ -138,7 +108,7 @@ function BurgerBuilder(props) {
                     </Modal>
 
                 </>
-            ) : error ? <p style={{ textAlign: 'center', marginTop: '150px' }}>Connecting error</p> : <PacmanLoader css={center} />}
+            ) : props.error ? <p style={{ textAlign: 'center', marginTop: '150px' }}>Connecting error</p> : <PacmanLoader css={center} />}
 
 
         </>
@@ -149,15 +119,20 @@ function BurgerBuilder(props) {
 
 const mapStateToProps = state => {
     return {
-        ingredients: state.ingredients,
-        totalPrice: state.totalPrice
+        ingredients: state.burgerBuilder.ingredients,
+        totalPrice: state.burgerBuilder.totalPrice,
+        error: state.burgerBuilder.error,
+        purchased: state.order.purchased
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onIngredientAdded: (name) => dispatch({ type: actions.ADD_INGREDIENT, ingredientName: name }),
-        onIngredientRemoved: (name) => dispatch({ type: actions.REMOVE_INGREDIENT, ingredientName: name }),
+        onIngredientAdded: (name) => dispatch(burgerBuilderActions.addIngredient(name)),
+        onIngredientRemoved: (name) => dispatch(burgerBuilderActions.removeIngredient(name)),
+        onInitIngredients: (ingredients) => dispatch(burgerBuilderActions.initIngredients(ingredients)),
+        onChangePurchased: () => dispatch(burgerBuilderActions.changePurchased()),
+        resetIngredients: () => dispatch(burgerBuilderActions.resetIngredients())
     }
 }
 
