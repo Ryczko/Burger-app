@@ -13,7 +13,7 @@ function SideDrawer(props) {
             <SideDrawerStyle className={props.isOpened ? "open" : "close"}>
                 <Logo height="18%" />
                 <nav>
-                    <NavigationItems />
+                    <NavigationItems isAuth={props.isAuth} />
                 </nav>
             </SideDrawerStyle>
         </>

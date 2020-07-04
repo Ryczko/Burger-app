@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
-import axios from 'axios-orders'
+import axios from 'axios-orders';
+
 export const addIngredient = (name) => {
     return {
         type: actionTypes.ADD_INGREDIENT,
@@ -28,6 +29,7 @@ export const resetIngredients = () => {
         type: actionTypes.RESET_INGREDIENTS
     }
 }
+
 export const initIngredients = (ingredients) => {
     return dispatch => {
         if (!ingredients) {
@@ -38,5 +40,11 @@ export const initIngredients = (ingredients) => {
                 .catch(err => dispatch(fetchIngredientsFailed()))
         }
         else return;
+    }
+}
+export const changeAuthPath = (path) => {
+    return {
+        type: actionTypes.CHANGE_AUTH_PATH,
+        path
     }
 }

@@ -1,25 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Burger from 'components/Burger/Burger'
 import BuildControls from 'components/Burger/BuildControls/BuildControls'
-import PacmanLoader from "react-spinners/PacmanLoader";
+import Spinner from 'components/UI/Spinner/Spinner'
 import axios from 'axios-orders'
-import { css } from "@emotion/core";
 import Modal from 'components/UI/Modal/Modal';
 import OrderSummary from 'components/Burger/OrderSummary/OrderSummary'
 import { connect } from 'react-redux'
 import withErrorHandler from 'hoc/withErrorHandler'
-import * as burgerBuilderActions from '../../store/actions'
-
-
-const center = css`
-  left:45%;
-  top:50%;
-  transform:translate(-50%,-50%);
-  position:absolute;
-`;
-const override = css`
-  left:40%;
-`;
+import * as burgerBuilderActions from 'store/actions'
 
 
 
@@ -51,11 +39,10 @@ function BurgerBuilder(props) {
 
     useEffect(() => {
         props.onInitIngredients(props.ingredients);
+        props.changeAuthPath('/');
         if (props.purchased) {
             props.resetIngredients()
             props.onChangePurchased();
-
-
         }
     }, [])
 
@@ -77,6 +64,14 @@ function BurgerBuilder(props) {
         }
     }, [props.ingredients])
 
+    const handleOrderButton = () => {
+        if (props.isAuth) setPurchasing(true);
+        else {
+            props.history.push('/auth');
+            props.changeAuthPath('/checkout');
+
+        };
+    }
 
     return (
         <>
@@ -90,13 +85,12 @@ function BurgerBuilder(props) {
                         purchasable={purchasable}
                         price={props.totalPrice}
                         ingredients={props.ingredients}
-                        orderButtonClicked={() => setPurchasing(true)}
+                        isAuth={props.isAuth}
+                        orderButtonClicked={handleOrderButton}
                     />
                     <Modal active={purchasing} loading={loading} closeModal={handleCloseModal}>
                         {loading ?
-                            <PacmanLoader
-                                css={override}
-                                color="green" /> :
+                            <Spinner /> :
                             (<OrderSummary
                                 ingredients={props.ingredients}
                                 continue={handleContinuePurchase}
@@ -108,7 +102,7 @@ function BurgerBuilder(props) {
                     </Modal>
 
                 </>
-            ) : props.error ? <p style={{ textAlign: 'center', marginTop: '150px' }}>Connecting error</p> : <PacmanLoader css={center} />}
+            ) : props.error ? <p style={{ textAlign: 'center', marginTop: '150px' }}>Connecting error</p> : <Spinner />}
 
 
         </>
@@ -122,7 +116,9 @@ const mapStateToProps = state => {
         ingredients: state.burgerBuilder.ingredients,
         totalPrice: state.burgerBuilder.totalPrice,
         error: state.burgerBuilder.error,
-        purchased: state.order.purchased
+        purchased: state.order.purchased,
+        isAuth: state.auth.token !== null,
+        authPath: state.auth.authRedirectPath
     }
 }
 
@@ -132,7 +128,8 @@ const mapDispatchToProps = dispatch => {
         onIngredientRemoved: (name) => dispatch(burgerBuilderActions.removeIngredient(name)),
         onInitIngredients: (ingredients) => dispatch(burgerBuilderActions.initIngredients(ingredients)),
         onChangePurchased: () => dispatch(burgerBuilderActions.changePurchased()),
-        resetIngredients: () => dispatch(burgerBuilderActions.resetIngredients())
+        resetIngredients: () => dispatch(burgerBuilderActions.resetIngredients()),
+        changeAuthPath: (path) => dispatch(burgerBuilderActions.changeAuthPath(path))
     }
 }
 

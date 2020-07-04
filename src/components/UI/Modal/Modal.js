@@ -5,6 +5,7 @@ import Backdrop from '../Backdrop/Backdrop'
 
 function Modal(props) {
 
+
     return ReactDOM.createPortal(
         <>
             <Backdrop active={props.active} onClick={props.closeModal} />
@@ -19,3 +20,4 @@ function Modal(props) {
 export default React.memo(Modal, (prev, next) =>
     next.active === prev.active && next.loading === prev.loading
 );
+

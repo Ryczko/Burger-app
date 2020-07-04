@@ -10,7 +10,7 @@ function Toolbar(props) {
             <ToggleMenuBtn onClick={props.click}><i className="icon-menu" /></ToggleMenuBtn>
             <Logo />
             <Nav className="deskopOnly">
-                <NavigationItems />
+                <NavigationItems isAuth={props.isAuth} />
             </Nav>
         </Header>
     );

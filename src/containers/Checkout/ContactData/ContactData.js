@@ -128,11 +128,12 @@ function ContactData(props) {
         const order = {
             ingredients: props.ingredients,
             price: props.totalPrice.toFixed(2),
-            orderData: formData
+            orderData: formData,
+            userId: props.userId
         }
 
 
-        props.onPurchase(order);
+        props.onPurchase(order, props.token);
 
 
     }
@@ -145,10 +146,7 @@ function ContactData(props) {
             config: orderForm[key],
 
         })
-
     }
-
-
 
     const inputChangedHandler = (event, inputId) => {
 
@@ -201,13 +199,15 @@ function ContactData(props) {
 const mapStateToProps = state => {
     return {
         ingredients: state.burgerBuilder.ingredients,
-        totalPrice: state.burgerBuilder.totalPrice
+        totalPrice: state.burgerBuilder.totalPrice,
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onPurchase: (orderData) => dispatch(contactDataActions.sendPurchase(orderData))
+        onPurchase: (orderData, token) => dispatch(contactDataActions.sendPurchase(orderData, token))
     }
 }
 

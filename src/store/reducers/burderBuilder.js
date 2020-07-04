@@ -3,6 +3,7 @@ import * as actions from '../actions/actionTypes';
 
 const initialState = {
     ingredients: null,
+    authRedirectPath: "/",
     totalPrice: 4,
     error: false
 };
@@ -45,7 +46,8 @@ const reducer = (state = initialState, action) => {
                     cheese: action.ingredients.cheese,
                     meat: action.ingredients.meat,
                 },
-                error: false
+                error: false,
+                totalPrice: initialState.totalPrice
             }
         case actions.FETCH_INGREDIENTS_FAILED:
             return {
@@ -61,6 +63,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...initialState,
                 ingredients: reseted
+            }
+        case actions.CHANGE_AUTH_PATH:
+            return {
+                ...state,
+                authRedirectPath: action.path
             }
         default:
             return state;

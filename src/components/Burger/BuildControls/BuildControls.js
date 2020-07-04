@@ -28,7 +28,9 @@ function BurgerControls(props) {
 
             ))}
 
-            <OrderButton disabled={!props.purchasable} onClick={props.orderButtonClicked}>Order</OrderButton>
+            <OrderButton disabled={!props.purchasable} onClick={props.orderButtonClicked}>
+                {props.isAuth ? "Order" : "Sing in to order"}
+            </OrderButton>
 
 
 
