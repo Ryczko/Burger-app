@@ -13,6 +13,7 @@ const controls = [
 
 function BurgerControls(props) {
 
+    // console.log()
 
     return (
         <BuildPanel>
@@ -23,7 +24,8 @@ function BurgerControls(props) {
                     label={el.label}
                     added={() => props.ingredientAdded(el.type)}
                     removed={() => props.ingredientRemoved(el.type)}
-                    disabled={props.disabled[el.type]}
+                    disabledRemove={props.disabledRemove[el.type]}
+                    disabledAdd={props.disabledAdd[el.type]}
                 />
 
             ))}

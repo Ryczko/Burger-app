@@ -8,11 +8,11 @@ ${normalize}
     padding:0;
     margin:0;
     box-sizing:border-box;
+    text-align:center;
 }
-html{
-    min-height:100vh;
-    position:relative;
-}
+
+
+
  a{
      text-decoration:none
  }

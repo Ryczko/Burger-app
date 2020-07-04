@@ -21,7 +21,7 @@ flex-flow:column;
 align-items:center;
 box-shadow:0 2px 1px pink;
 margin:auto;
-padding 10px 0;
+padding 15px 0;
 `
 export const OrderButton = styled.button`
 background-color: #DAD735;

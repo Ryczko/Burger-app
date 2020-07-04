@@ -34,8 +34,6 @@ function BurgerIngredient(props) {
             ingredient = null;
     }
 
-
-
     return ingredient;
 }
 

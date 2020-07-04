@@ -5,8 +5,8 @@ function BuildControl(props) {
     return (
         <BuildControlStyle>
             <Label>{props.label}</Label>
-            <ControlButton type="less" onClick={props.removed} disabled={props.disabled}>Less</ControlButton >
-            <ControlButton onClick={props.added}>more</ControlButton >
+            <ControlButton type="less" onClick={props.removed} disabled={props.disabledRemove}>Less</ControlButton >
+            <ControlButton onClick={props.added} disabled={props.disabledAdd}>more</ControlButton >
         </BuildControlStyle>
     );
 }

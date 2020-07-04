@@ -15,7 +15,7 @@ function Orders(props) {
         props.onFetchOrders(props.token, props.userId);
     }, []);
 
-    let ordersList = <h3 >No orders</h3>
+    let ordersList = <h3 style={{ marginTop: '50px' }}>No orders</h3>
 
     if (props.orders.length !== 0) {
         ordersList = props.orders.map(el => <Order key={el.id} price={el.price} ingredients={el.ingredients} />);

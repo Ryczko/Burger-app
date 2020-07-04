@@ -4,6 +4,7 @@ import breakPoints from 'utilis/breakpoints'
 export const BurgerStyle = styled.div`
   width:90%;
   margin:auto;
+  padding:15px;
   height:250px;
   text-align:center;
   font-weight:bold;

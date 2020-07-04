@@ -48,11 +48,15 @@ function BurgerBuilder(props) {
 
 
 
-    const disabledInfo = {
+    const disabledInfoRemove = {
         ...props.ingredients
     };
-    for (let key in disabledInfo) {
-        disabledInfo[key] = disabledInfo[key] <= 0;
+    const disabledInfoAdd = {
+        ...props.ingredients
+    };
+    for (let key in disabledInfoRemove) {
+        disabledInfoRemove[key] = disabledInfoRemove[key] <= 0;
+        disabledInfoAdd[key] = disabledInfoAdd[key] >= 3;
     }
 
     useEffect(() => {
@@ -81,7 +85,8 @@ function BurgerBuilder(props) {
                     <BuildControls
                         ingredientAdded={props.onIngredientAdded}
                         ingredientRemoved={props.onIngredientRemoved}
-                        disabled={disabledInfo}
+                        disabledRemove={disabledInfoRemove}
+                        disabledAdd={disabledInfoAdd}
                         purchasable={purchasable}
                         price={props.totalPrice}
                         ingredients={props.ingredients}
