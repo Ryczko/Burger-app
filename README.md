@@ -1,7 +1,7 @@
 # Burger app
 
 ## General info
-This project is simple Lorem ipsum dolor generator.
+App where after sign up you can create your own burger and send the order
 	
 ## Technologies
 Project is created with:
